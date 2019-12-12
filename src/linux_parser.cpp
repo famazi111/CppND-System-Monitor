@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "linux_parser.h"
 
@@ -218,14 +219,17 @@ string LinuxParser::Command(int pid) {
 
 // Read and return the memory used by a process
 string LinuxParser::Ram(int pid) {
-  string line, key, value;
+  string line, key;
+  long value;
+  std::ostringstream ostream;
   std::ifstream filestream(kProcDirectory + std::to_string(pid) + "/" + kStatusFilename);
   if (filestream.is_open()) {
     while (std::getline(filestream, line)) {
       std::istringstream linestream(line);
       while (linestream >> key >> value) {
-	if (key == "VmSize:") {
-          return value;
+	      if (key == "VmSize:") {
+          ostream << (value/1024);
+          return ostream.str();
         }
       }
     }
