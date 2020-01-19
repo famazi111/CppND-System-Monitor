@@ -26,7 +26,7 @@ std::vector<Process>& System::Processes() {
    std::vector<int> pids = LinuxParser::Pids();
    for (std::size_t i = 0; i < pids.size(); i++) {
       Process p(pids[i]);
-      processes_.push_back(p);
+      processes_.emplace_back(p);
    }
    //sort vector using overloaded "less than" comparison operator
    std::sort(processes_.begin(), processes_.end());
